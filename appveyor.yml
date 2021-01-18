@@ -6,66 +6,66 @@ image:
 
 for:
     -
-    matrix:
-        only:
-            - image: Visual Studio 2017
+        matrix:
+            only:
+                - image: Visual Studio 2017
 
-        cache: c:\tools\vcpkg\installed
+            cache: c:\tools\vcpkg\installed
 
-        init:
+            init:
 
-        - cmd: ''
+            - cmd: ''
 
-        install:
+            install:
 
-        - cmd: >-
+            - cmd: >-
 
-            vcpkg install zlib:x64-windows-static
+                vcpkg install zlib:x64-windows-static
 
-            vcpkg install libevent:x64-windows-static
+                vcpkg install libevent:x64-windows-static
 
-            vcpkg install pcre:x64-windows-static
+                vcpkg install pcre:x64-windows-static
 
-            vcpkg integrate install
+                vcpkg integrate install
 
-        build_script:
+            build_script:
 
-        - cmd: >-
+            - cmd: >-
 
-            vcpkg list
+                vcpkg list
 
-            git clone https://boringssl.googlesource.com/boringssl
+                git clone https://boringssl.googlesource.com/boringssl
 
-            cd boringssl
+                cd boringssl
 
-            git checkout b117a3a0b7bd11fe6ebd503ec6b45d6b910b41a1
+                git checkout b117a3a0b7bd11fe6ebd503ec6b45d6b910b41a1
 
-            cmake -DCMAKE_GENERATOR_PLATFORM=x64 --config Debug -DBUILD_SHARED_LIBS=OFF -DOPENSSL_NO_ASM=1 .
-
-
-
-            msbuild /m ALL_BUILD.vcxproj
+                cmake -DCMAKE_GENERATOR_PLATFORM=x64 --config Debug -DBUILD_SHARED_LIBS=OFF -DOPENSSL_NO_ASM=1 .
 
 
 
-            cd ..
+                msbuild /m ALL_BUILD.vcxproj
 
 
 
-            git submodule init
+                cd ..
 
 
 
-            git submodule update
+                git submodule init
 
 
 
-            cmake -DCMAKE_GENERATOR_PLATFORM=x64 -DBUILD_SHARED_LIBS=OFF -DVCPKG_TARGET_TRIPLET=x64-windows-static -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBORINGSSL_DIR=%cd%\boringssl .
+                git submodule update
 
 
 
-            msbuild /m ALL_BUILD.vcxproj
+                cmake -DCMAKE_GENERATOR_PLATFORM=x64 -DBUILD_SHARED_LIBS=OFF -DVCPKG_TARGET_TRIPLET=x64-windows-static -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DBORINGSSL_DIR=%cd%\boringssl .
 
-        test_script:
 
-        - cmd: msbuild /m RUN_TESTS.vcxproj
+
+                msbuild /m ALL_BUILD.vcxproj
+
+            test_script:
+
+            - cmd: msbuild /m RUN_TESTS.vcxproj
