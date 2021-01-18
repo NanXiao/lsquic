@@ -2,8 +2,9 @@ version: 2.{branch}.{build}
 
 image:
     - Visual Studio 2017
-        cache: c:\tools\vcpkg\installed
     - Ubuntu2004
+
+cache: c:\tools\vcpkg\installed
 
 for:
     -
